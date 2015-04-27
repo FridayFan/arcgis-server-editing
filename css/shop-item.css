@@ -30,3 +30,27 @@ body {
 footer {
     margin: 50px 0;
 }
+
+#mainContainer{
+	width: 90%;
+}
+
+.inputs{
+	margin-bottom: 5px;
+}
+
+.templatePicker {
+        border: none;
+      }
+
+.dj_ie .infowindow .window .top .right .user .content { position: relative; }
+.dj_ie .simpleInfoWindow .content {position: relative;}
+.col-md-12{ background-color: #000000}
+  #braLogo{
+border-right: 1px solid rgb(106, 106, 106);
+float: left;
+height: 24px;
+margin-right: 20px;
+padding-right: 20px;
+width: 120px;
+}
