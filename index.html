@@ -71,9 +71,9 @@
             <div class="col-md-3">
 
                 <div id="formDiv" style="overflow-y : scroll; height: 500px">
-                    <div class="input-group inputs" ng-repeat = "thing in app.things" >
-                      <span class="input-group-addon">{{ thing }}</span>
-                      <input type="text" id = "{{ thing }}"class="form-control" placeholder="{{thing.replace('BRA','')}}" aria-describedby="basic-addon1">
+                    <div class="input-group inputs" ng-repeat = "project in projects.attribute track by $index" >
+                      <span class="input-group-addon">{{ project }}</span>
+                      <input type="text" id = "{{ project }}"class="form-control" placeholder="{{ project}}" aria-describedby="basic-addon1" ng-model="projects.value[$index]">
                     </div>
 
                 </div>
@@ -93,7 +93,7 @@
                   <div id="editorDiv"></div>
                 </div>
                 </br>
-                <button type="submit" class="btn btn-success btn-lg">Sumbit</button>
+                <button type="submit" class="btn btn-success btn-lg" ng-click="clickSumbit()">Sumbit</button>
             </div>
 
         </div>
@@ -109,7 +109,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Boston Redevelopment Authority 2015</p>
+                    <p>Copyright &copy; Boston Redevelopment Authority</p>
                 </div>
             </div>
         </footer>
