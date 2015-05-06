@@ -109,7 +109,7 @@ app.controller("AppCtrl", function($scope,$http) {
         url: URL,
         method: "PUT",
         headers: {
-          'Authorization': 'Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==',
+          'Authorization': 'Basic amlhbi5mYW46eHVubHUxMTIxMTA=',
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
         }, 
         data: {
