@@ -12,15 +12,16 @@
     <title>Shop Item - Start Bootstrap Template</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
 
-    <!-- Custom CSS -->
-    <link href="css/shop-item.css" rel="stylesheet">
+    
 
 
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.13/esri/css/esri.css">   
     <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/claro/claro.css">
+    <!-- Custom CSS -->
+    <link href="css/shop-item.css" rel="stylesheet">
 <!--     <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">    -->
 <!--     <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css"> -->
     <style>
@@ -72,7 +73,7 @@
 
                 <div id="formDiv" style="overflow-y : scroll; height: 500px">
                     <div class="input-group inputs" ng-repeat = "project in projects.attribute track by $index" >
-                      <span class="input-group-addon">{{ project }}</span>
+                      <span class="input-group-addon">{{ project.replace("BRA ","") }}</span>
                       <input type="text" id = "{{ project }}"class="form-control" placeholder="{{ project}}" aria-describedby="basic-addon1" ng-model="projects.value[$index]">
                     </div>
 
@@ -82,7 +83,7 @@
 
             <div class="col-md-6">
 
-                <div id="mapDiv"></div>
+                <div id="mapDiv" ng-controller="MapCtrl"></div>
 
             </div>
 
@@ -136,11 +137,11 @@
         };
     </script>
 
-    <script src="http://js.arcgis.com/3.13compact"></script>
+    <script src="http://js.arcgis.com/3.13"></script>
 
     <script src="js/angular.js"></script>
 
-    <script src="js/map.js"></script>
+    <!--<script src="js/map.js"></script>-->
 
 </body>
 

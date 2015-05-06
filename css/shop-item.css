@@ -36,7 +36,7 @@ footer {
 }
 
 .inputs{
-	margin-bottom: 5px;
+	margin-bottom: 15px;
 }
 
 .templatePicker {
@@ -53,4 +53,16 @@ height: 24px;
 margin-right: 20px;
 padding-right: 20px;
 width: 120px;
+}
+
+
+.esriPopup.light .titlePane, .esriPopup.dark .titlePane{
+    height:35px;
+    background-color: #333333;
+    color: #eee;
+}
+
+.esriPopup.light .actionsPane .action, .esriPopup.light .esriViewPopup .gallery .mediaIcon, .esriPopup.light .esriViewPopup .gallery .mediaHandle, 
+.esriPopup.light .titleButton {
+    color: #eee;
 }
