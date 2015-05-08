@@ -1,6 +1,7 @@
 var app = angular.module("app", []);
 
-app.controller("AppCtrl", function($scope,$http) {
+app.controller("AppCtrl", function($scope, $rootScope, $http) {
+  $rootScope.loading = false;
   // this.things = ["Title",
   // 				 "BRA Project Type",
   // 				 "BRA Article80 Type",
@@ -28,61 +29,43 @@ app.controller("AppCtrl", function($scope,$http) {
 
   	$scope.projects = 
   			{attribute: [
-              "BRA ProjectID",
-              "Document name",
+              'BRA PI ID',
+              'Document name',
               'Title',
-              'BRA Latitude',
-              'BRA Longitude',
-        			'BRA Project Type',
-        			'BRA Article80 Type',
-        			'BRA Project Neighborhood',
-        			'BRA Project Status',
-        			'BRA Project Status Css Class',
-        			'BRA Project Status Number',
-              'BRA Project Description',
-           		'BRA Project Street Num',
-        			'BRA Project Street Name',
-        			'BRA Project Zip Code',
-       				'BRA Land Sq Ft',
-      				'BRA Bldg Sq Ft',
-        			'BRA Res Units',
-        			'BRA Parcel ID',
-        			'BRA Is Publish',
-        			'BRA Last Updated Date',
-        			'BRA Board Approval Date',
+              'BRA Description',
+        			'BRA Neighborhood ID',
+        			'BRA Neighborhood Name',
+        			'BRA Status ID',
+        			'BRA Status Name',
+        			'BRA Status Css Class',
+        			'BRA Planning Type ID',
+              'BRA Planning Type Name',
+           		'BRA Last Updated Date',
         			'BRA Contact Name',
         			'BRA Contact Email',
-        			'BRA Contact Phone',
-        			'BRA Neighborhood ID'],
-        	value: ['',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
+        			'BRA Contact Phone'],
+        	value: [
               '',
-           		'',
-        			'',
-        			'',
-       				'',
-      				'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'',
-        			'']
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '']
         	};
   	
 
-  	$scope.clickSumbit = function(){
+  	$rootScope.clickSumbit = function(){
   		console.log($scope.projects.value);
+      $rootScope.loading = true;
 
 
       // var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/projects/Development-Projects/10-St-James-Avenue?format=json";
@@ -103,7 +86,7 @@ app.controller("AppCtrl", function($scope,$http) {
 
 
   
-  var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/projects/Development-Projects/10-St-James-Avenue?format=json";
+      var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/projects/Development-Projects/Test-(1)?format=json";
 
       var res = {
         url: URL,
@@ -113,18 +96,25 @@ app.controller("AppCtrl", function($scope,$http) {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
         }, 
         data: {
-      }
+                // "BRALandSqFt" : "1234"
+                "DocumentID" : "10897"
+              }
+      
       };
 
       // $http.defaults.headers.common.Authorization = 'Basic Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==';
       $http(res).
           success(function(data, status, headers, config) {
             // this callback will be called asynchronously
-            console.log(data);
+            console.log(status);
             // when the response is available
+            $rootScope.loading = false;
           }).
           error(function(data, status, headers, config) {
             // called asynchronously if an error occurs
+            $rootScope.loading = false;
+
+            console.log(status)
             // or server returns response with an error status.
           });
   	};
@@ -132,7 +122,7 @@ app.controller("AppCtrl", function($scope,$http) {
 });
 
 
-app.controller("MapCtrl", function($scope) {
+app.controller("MapCtrl", function($scope, $rootScope, $http) {
   require(["application/bootstrapmap",
         "esri/tasks/GeometryService",
         "esri/toolbars/edit",
@@ -165,10 +155,11 @@ app.controller("MapCtrl", function($scope) {
         esriConfig, jsapiBundle,
         arrayUtils, parser, keys) {
           // Get a reference to the ArcGIS Map class
+
           $scope.map = BootstrapMap.create("mapDiv",{
             basemap:"gray",
             center:[-71.059, 42.36],
-            zoom:14,
+            zoom:11,
             scrollWheelZoom: false
           });
 
@@ -176,7 +167,7 @@ app.controller("MapCtrl", function($scope) {
 
           esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
-            var parcel = new FeatureLayer("http://mapservices.bostonredevelopmentauthority.org/arcgis/rest/services/Test/Article80_test/FeatureServer/0",{
+            var parcel = new FeatureLayer("http://mapservices.bostonredevelopmentauthority.org/arcgis/rest/services/Test/Bos_Planning_Initiatives_Test/FeatureServer/0",{
               mode: FeatureLayer.MODE_ONDEMAND, 
               outFields: ['*'],
               opacity: 0.8
@@ -242,10 +233,13 @@ app.controller("MapCtrl", function($scope) {
 
           $scope.map.on("click",function(e){
             // console.log(e);
+            // $rootScope.loading = true;
+            // console.log($rootScope.loading);
+            // $scope.$apply();
 
 
 
-            var identifyTask = new IdentifyTask("http://mapservices.bostonredevelopmentauthority.org/arcgis/rest/services/Test/Article80_test/MapServer");
+            var identifyTask = new IdentifyTask("http://mapservices.bostonredevelopmentauthority.org/arcgis/rest/services/Test/Bos_Planning_Initiatives_Test/MapServer");
             identifyParams = new IdentifyParameters();
             identifyParams.tolerance = 6;
             identifyParams.returnGeometry = true;
@@ -258,8 +252,59 @@ app.controller("MapCtrl", function($scope) {
             identifyTask.execute(identifyParams, function (idResults) {
                 // handleIdResultAddress(idResults, e);
                 console.log(idResults);
-                $scope.projects.value[3] = idResults[0].feature.attributes.X;
-                $scope.projects.value[4] = idResults[0].feature.attributes.Y;
+                // $scope.projects.value[3] = idResults[0].feature.attributes.X;
+                // $scope.projects.value[4] = idResults[0].feature.attributes.Y;
+
+                
+                var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/Planning/Planning-Initiatives/"+ idResults[0].feature.attributes.Name.split(' ').join('-') +"?format=json";
+
+                var res = {
+                  url: URL,
+                  method: "GET",
+                  headers: {
+                    'Authorization': 'Basic amlhbi5mYW46eHVubHUxMTIxMTA=',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+                  }
+                };
+
+                // $http.defaults.headers.common.Authorization = 'Basic Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==';
+                $http(res).
+                    success(function(data, status, headers, config) {
+                      // this callback will be called asynchronously
+                      // $rootScope.loading = false;
+                      // console.log($rootScope.loading);
+                      console.log(data);
+
+                      $scope.projects.value[0] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningInitID;
+                      // $scope.projects.value[1] = data.cms_documents[0].BRA_Project[0].DocumentName;
+                      // $scope.projects.value[2] = data.cms_documents[0].BRA_Project[0].Title;
+                      // $scope.projects.value[3] = data.cms_documents[0].BRA_Project[0].BRALatitude;
+                      // $scope.projects.value[4] = data.cms_documents[0].BRA_Project[0].BRALongitude;
+                      // $scope.projects.value[5] = data.cms_documents[0].BRA_Project[0].BRAProjectType;
+                      // $scope.projects.value[6] = data.cms_documents[0].BRA_Project[0].BRAProjectNeighborhood;
+                      // $scope.projects.value[7] = data.cms_documents[0].BRA_Project[0].BRAProjectStatus;
+                      // $scope.projects.value[8] = data.cms_documents[0].BRA_Project[0].BRAProjectStatusCssClass;
+
+
+
+
+
+
+
+
+
+
+
+                      // $scope.projects.value[4] = ;
+                      // when the response is available
+                    }).
+                    error(function(data, status, headers, config) {
+                      // called asynchronously if an error occurs
+                      // or server returns response with an error status.
+                    });
+
+
+
                 $scope.$apply();
             });
 

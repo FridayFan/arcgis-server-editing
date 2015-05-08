@@ -70,7 +70,16 @@
         <div class="row">
 
             <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>From CMS</h1>
+                    </div>
 
+                    <div ng-show="loading" class="loading col-md-6"><img src="img/pageLoader.gif"></div>
+                </div>
+            
+            
+            
                 <div id="formDiv" style="overflow-y : scroll; height: 500px">
                     <div class="input-group inputs" ng-repeat = "project in projects.attribute track by $index" >
                       <span class="input-group-addon">{{ project.replace("BRA ","") }}</span>
