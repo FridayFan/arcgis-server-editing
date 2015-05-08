@@ -86,7 +86,7 @@ app.controller("AppCtrl", function($scope, $rootScope, $http) {
 
 
   
-      var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/projects/Development-Projects/Test-(1)?format=json";
+      var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/Planning/Planning-Initiatives/123TEST?format=json";
 
       var res = {
         url: URL,
@@ -97,7 +97,7 @@ app.controller("AppCtrl", function($scope, $rootScope, $http) {
         }, 
         data: {
                 // "BRALandSqFt" : "1234"
-                "DocumentID" : "10897"
+                "DocumentName" : $scope.projects.value[1]
               }
       
       };
@@ -276,15 +276,20 @@ app.controller("MapCtrl", function($scope, $rootScope, $http) {
                       console.log(data);
 
                       $scope.projects.value[0] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningInitID;
-                      // $scope.projects.value[1] = data.cms_documents[0].BRA_Project[0].DocumentName;
-                      // $scope.projects.value[2] = data.cms_documents[0].BRA_Project[0].Title;
-                      // $scope.projects.value[3] = data.cms_documents[0].BRA_Project[0].BRALatitude;
-                      // $scope.projects.value[4] = data.cms_documents[0].BRA_Project[0].BRALongitude;
-                      // $scope.projects.value[5] = data.cms_documents[0].BRA_Project[0].BRAProjectType;
-                      // $scope.projects.value[6] = data.cms_documents[0].BRA_Project[0].BRAProjectNeighborhood;
-                      // $scope.projects.value[7] = data.cms_documents[0].BRA_Project[0].BRAProjectStatus;
-                      // $scope.projects.value[8] = data.cms_documents[0].BRA_Project[0].BRAProjectStatusCssClass;
-
+                      $scope.projects.value[1] = data.cms_documents[0].BRA_PlanningInit[0].DocumentName;
+                      $scope.projects.value[2] = data.cms_documents[0].BRA_PlanningInit[0].Title;
+                      $scope.projects.value[3] = data.cms_documents[0].BRA_PlanningInit[0].BRADescription;
+                      $scope.projects.value[4] = data.cms_documents[0].BRA_PlanningInit[0].BRANeighborhoodID;
+                      $scope.projects.value[5] = data.cms_documents[0].BRA_PlanningInit[0].BRANeighborhoodName;
+                      $scope.projects.value[6] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusID;
+                      $scope.projects.value[7] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusName;
+                      $scope.projects.value[8] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusCssClass;
+                      $scope.projects.value[9] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningTypeID;
+                      $scope.projects.value[10] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningTypeName;
+                      $scope.projects.value[11] = data.cms_documents[0].BRA_PlanningInit[0].LastUpdateDate;
+                      $scope.projects.value[12] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactName;
+                      $scope.projects.value[13] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactEmail;
+                      $scope.projects.value[14] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactPhone;
 
 
 
