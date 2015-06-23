@@ -76,13 +76,18 @@
                     </div>
 
                     <div ng-show="loading" class="loading col-md-6"><img src="img/pageLoader.gif"></div>
+                    <div ng-show="InitNotFound" class="alert alert-danger col-md-6">Planing Init not found in CMS</div>
                 </div>
             
             
             
                 <div id="formDiv" style="overflow-y : scroll; height: 500px">
-                    <div class="input-group inputs" ng-repeat = "project in projects.attribute track by $index" >
-                      <span class="input-group-addon">{{ project.replace("BRA ","") }}</span>
+                    <div class="form-group" ng-repeat = "project in projects.attribute track by $index" >
+                      <!-- <span class="input-group-addon">{{ project.replace("BRA ","") }}</span> -->
+
+                      <label class="control-label" for="{{ project }}">{{ project.replace("BRA ","") }}</label>
+
+
                       <input type="text" id = "{{ project }}"class="form-control" placeholder="{{ project}}" aria-describedby="basic-addon1" ng-model="projects.value[$index]">
                     </div>
 
@@ -103,7 +108,11 @@
                   <div id="editorDiv"></div>
                 </div>
                 </br>
-                <button type="submit" class="btn btn-success btn-lg" ng-click="clickSumbit()">Sumbit</button>
+                <div class="btn-group" role="group" aria-label="...">
+                  <button type="submit" class="submitBtn btn btn-default btn-lg" ng-click="clickSumbit()">Submit</button>
+                <button type="submit" class="UpdateBtn btn btn-default btn-lg" ng-click="clickUpdate()">Update</button>
+                </div>
+                
             </div>
 
         </div>

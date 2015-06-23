@@ -2,48 +2,27 @@ var app = angular.module("app", []);
 
 app.controller("AppCtrl", function($scope, $rootScope, $http) {
   $rootScope.loading = false;
-  // this.things = ["Title",
-  // 				 "BRA Project Type",
-  // 				 "BRA Article80 Type",
-  // 				 "BRA Project Neighborhood",
-  // 				 "BRA Project Status",
-  // 				 "BRA Project Status Css Class",
-  // 				 "BRA Project Status Number",
-  // 				 "BRA Project Description",
-  // 				 "BRA Project Street Num",
-  // 				 "BRA Project Street Name",
-  // 				 "BRA Project Zip Code",
-  // 				 "BRA Land Sq Ft",
-  // 				 "BRA Bldg Sq Ft",
-  // 				 "BRA Res Units",
-  // 				 "BRA Parcel ID",
-  // 				 "BRA Is Publish",
-  // 				 "BRA Last Updated Date",
-  // 				 "BRA Board Approval Date",
-  // 				 "BRA Contact Name",
-  // 				 "BRA Contact Email",
-  // 				 "BRA Contact Phone",
-  // 				 "BRA Neighborhood ID",
-  // 				 "BRA Latitude",
-  // 				 "BRA Longitude"];
-
+  $rootScope.InitNotFound = false;
+  $rootScope.PUTUrl = "";
+  $rootScope.POSTUrl = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/Planning/Planning-Initiatives";
   	$scope.projects = 
   			{attribute: [
-              'BRA PI ID',
-              'Document name',
+              'BRAPlanningInitID',
+              'DocumentName',
               'Title',
-              'BRA Description',
-        			'BRA Neighborhood ID',
-        			'BRA Neighborhood Name',
-        			'BRA Status ID',
-        			'BRA Status Name',
-        			'BRA Status Css Class',
-        			'BRA Planning Type ID',
-              'BRA Planning Type Name',
-           		'BRA Last Updated Date',
-        			'BRA Contact Name',
-        			'BRA Contact Email',
-        			'BRA Contact Phone'],
+              'BRADescription',
+        			'BRANeighborhoodID',
+        			'BRANeighborhoodName',
+        			'BRAStatusID',
+        			'BRAStatusName',
+        			'BRAStatusCSSClass',
+        			'BRAPlanningTypeID',
+              'BRAPlanningTypeName',
+           		'LastUpdateDate',
+        			'BRAContactName',
+        			'BRAContactEmail',
+        			'BRAContactPhone'
+              ],
         	value: [
               '',
               '',
@@ -63,50 +42,38 @@ app.controller("AppCtrl", function($scope, $rootScope, $http) {
         	};
   	
 
-  	$rootScope.clickSumbit = function(){
+  	$rootScope.clickUpdate = function(){
   		console.log($scope.projects.value);
       $rootScope.loading = true;
+      var data = {};
+      for(var i = 0; i < $scope.projects.attribute.length; i++)
+      {
+        data[$scope.projects.attribute[i]] = $scope.projects.value[i];
+      }
+      
 
-
-      // var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/projects/Development-Projects/10-St-James-Avenue?format=json";
-
-      // // $http.defaults.headers.common.Authorization = 'Basic Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==';
-      // $http.get(URL,{"DocumentContent":"123"},{
-      //   headers: {'Authorization': 'Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ=='}
-      // }).
-      //     success(function(data, status, headers, config) {
-      //       // this callback will be called asynchronously
-      //       console.log(data);
-      //       // when the response is available
-      //     }).
-      //     error(function(data, status, headers, config) {
-      //       // called asynchronously if an error occurs
-      //       // or server returns response with an error status.
-      //     });
-
-
-  
-      var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/Planning/Planning-Initiatives/123TEST?format=json";
 
       var res = {
-        url: URL,
+        url: $scope.PUTUrl,
         method: "PUT",
         headers: {
           'Authorization': 'Basic amlhbi5mYW46eHVubHUxMTIxMTA=',
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
         }, 
-        data: {
-                // "BRALandSqFt" : "1234"
-                "DocumentName" : $scope.projects.value[1]
-              }
+        data: data
+              
+              
       
       };
+      console.log(data);
+      console.log($rootScope.PUTUrl);
+
 
       // $http.defaults.headers.common.Authorization = 'Basic Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==';
       $http(res).
           success(function(data, status, headers, config) {
             // this callback will be called asynchronously
-            console.log(status);
+            // console.log(headers);
             // when the response is available
             $rootScope.loading = false;
           }).
@@ -118,6 +85,56 @@ app.controller("AppCtrl", function($scope, $rootScope, $http) {
             // or server returns response with an error status.
           });
   	};
+
+    $rootScope.clickSumbit = function(){
+      console.log($scope.projects.value);
+      $rootScope.loading = true;
+      var data = "<CMS_MenuItem>";
+      // for(var i = 0; i < $scope.projects.attribute.length; i++)
+      // {
+      //   // data[$scope.projects.attribute[i]] = $scope.projects.value[i];
+      //   data += "<" + $scope.projects.attribute[i] + ">" + $scope.projects.value[i] + "</" + $scope.projects.attribute[i] + ">"
+
+      // }
+      // data += "</CMS_MenuItem>";
+
+
+      data += "<" + $scope.projects.attribute[0] + ">" + $scope.projects.value[0] + "</" + $scope.projects.attribute[0] + ">" + "<" + $scope.projects.attribute[1] + ">" + $scope.projects.value[1] + "</" + $scope.projects.attribute[1] + ">"
+
+      data += "</CMS_MenuItem>";
+
+
+      var res = {
+        url: $scope.POSTUrl,
+        method: "POST",
+        headers: {
+          'Authorization': 'Basic amlhbi5mYW46eHVubHUxMTIxMTA='
+        }, 
+        data: data
+              
+              
+      
+      };
+      console.log(data);
+      console.log($rootScope.POSTUrl);
+
+
+      // $http.defaults.headers.common.Authorization = 'Basic Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==';
+      $http(res).
+          success(function(data, status, headers, config) {
+            // this callback will be called asynchronously
+            // console.log(headers);
+            // when the response is available
+            $rootScope.loading = false;
+          }).
+          error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            $rootScope.loading = false;
+
+            console.log(status)
+            // or server returns response with an error status.
+          });
+    };
 
 });
 
@@ -158,8 +175,8 @@ app.controller("MapCtrl", function($scope, $rootScope, $http) {
 
           $scope.map = BootstrapMap.create("mapDiv",{
             basemap:"gray",
-            center:[-71.059, 42.36],
-            zoom:11,
+            center:[-71.059, 42.361],
+            zoom: 13,
             scrollWheelZoom: false
           });
 
@@ -233,7 +250,8 @@ app.controller("MapCtrl", function($scope, $rootScope, $http) {
 
           $scope.map.on("click",function(e){
             // console.log(e);
-            // $rootScope.loading = true;
+            $rootScope.loading = true;
+            $rootScope.InitNotFound = false;
             // console.log($rootScope.loading);
             // $scope.$apply();
 
@@ -251,73 +269,45 @@ app.controller("MapCtrl", function($scope, $rootScope, $http) {
             identifyParams.mapExtent = $scope.map.extent;
             identifyTask.execute(identifyParams, function (idResults) {
                 // handleIdResultAddress(idResults, e);
-                console.log(idResults);
-                // $scope.projects.value[3] = idResults[0].feature.attributes.X;
-                // $scope.projects.value[4] = idResults[0].feature.attributes.Y;
-
-                
-                var URL = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/Planning/Planning-Initiatives/"+ idResults[0].feature.attributes.Name.split(' ').join('-') +"?format=json";
-
-                var res = {
-                  url: URL,
-                  method: "GET",
-                  headers: {
-                    'Authorization': 'Basic amlhbi5mYW46eHVubHUxMTIxMTA=',
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
-                  }
-                };
-
-                // $http.defaults.headers.common.Authorization = 'Basic Basic UmVzdEFQSTpCUkFCb3N0b242MTchIQ==';
-                $http(res).
-                    success(function(data, status, headers, config) {
-                      // this callback will be called asynchronously
-                      // $rootScope.loading = false;
-                      // console.log($rootScope.loading);
-                      console.log(data);
-
-                      $scope.projects.value[0] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningInitID;
-                      $scope.projects.value[1] = data.cms_documents[0].BRA_PlanningInit[0].DocumentName;
-                      $scope.projects.value[2] = data.cms_documents[0].BRA_PlanningInit[0].Title;
-                      $scope.projects.value[3] = data.cms_documents[0].BRA_PlanningInit[0].BRADescription;
-                      $scope.projects.value[4] = data.cms_documents[0].BRA_PlanningInit[0].BRANeighborhoodID;
-                      $scope.projects.value[5] = data.cms_documents[0].BRA_PlanningInit[0].BRANeighborhoodName;
-                      $scope.projects.value[6] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusID;
-                      $scope.projects.value[7] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusName;
-                      $scope.projects.value[8] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusCssClass;
-                      $scope.projects.value[9] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningTypeID;
-                      $scope.projects.value[10] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningTypeName;
-                      $scope.projects.value[11] = data.cms_documents[0].BRA_PlanningInit[0].LastUpdateDate;
-                      $scope.projects.value[12] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactName;
-                      $scope.projects.value[13] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactEmail;
-                      $scope.projects.value[14] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactPhone;
-
-
-
-
-
-
-
-
-
-
-                      // $scope.projects.value[4] = ;
-                      // when the response is available
-                    }).
-                    error(function(data, status, headers, config) {
-                      // called asynchronously if an error occurs
-                      // or server returns response with an error status.
-                    });
-
-
-
-                $scope.$apply();
+                if(idResults.length > 0){
+                  console.log(idResults);
+                  $rootScope.PUTUrl = "http://staging.bostonredevelopmentauthority.org/rest/content/currentsite/en-us/document/Planning/Planning-Initiatives/"+ idResults[0].feature.attributes.Name.split(' ').join('-') +"?format=json";
+                  var res = {
+                    url: $rootScope.PUTUrl,
+                    method: "GET",
+                    headers: {
+                      'Authorization': 'Basic amlhbi5mYW46eHVubHUxMTIxMTA=' 
+                    }
+                  };
+                  $http(res).
+                      success(function(data, status, headers, config) {
+                        // this callback will be called asynchronously
+                        $rootScope.loading = false;
+                        $scope.projects.value[0] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningInitID;
+                        $scope.projects.value[1] = data.cms_documents[0].BRA_PlanningInit[0].DocumentName;
+                        $scope.projects.value[2] = data.cms_documents[0].BRA_PlanningInit[0].Title;
+                        $scope.projects.value[3] = data.cms_documents[0].BRA_PlanningInit[0].BRADescription;
+                        $scope.projects.value[4] = data.cms_documents[0].BRA_PlanningInit[0].BRANeighborhoodID;
+                        $scope.projects.value[5] = data.cms_documents[0].BRA_PlanningInit[0].BRANeighborhoodName;
+                        $scope.projects.value[6] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusID;
+                        $scope.projects.value[7] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusName;
+                        $scope.projects.value[8] = data.cms_documents[0].BRA_PlanningInit[0].BRAStatusCSSClass;
+                        $scope.projects.value[9] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningTypeID;
+                        $scope.projects.value[10] = data.cms_documents[0].BRA_PlanningInit[0].BRAPlanningTypeName;
+                        $scope.projects.value[11] = data.cms_documents[0].BRA_PlanningInit[0].LastUpdateDate;
+                        $scope.projects.value[12] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactName;
+                        $scope.projects.value[13] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactEmail;
+                        $scope.projects.value[14] = data.cms_documents[0].BRA_PlanningInit[0].BRAContactPhone;
+                      }).
+                      error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        $rootScope.loading = false;
+                        $rootScope.InitNotFound = true;
+                      });
+                  $scope.$apply();
+                }
             });
-
-
-
-            
-
-            // console.log($scope.projects);
           });
         }
 
